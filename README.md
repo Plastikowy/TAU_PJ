@@ -29,4 +29,16 @@ Kroki:
 
 MOZILLA TESTS:
 
+TEST 1:
+
+Założenia:
+Chcemy otrzymać informację o błędnym loginie lub haśle na stronie logowania do serwisu wykop.pl
+
+Kroki:
+1. Wchodzimy na stronę wykop.pl
+2. W prawym górnym rogu klikamy przycisk "Zaloguj się"
+3. W pole loginu wpisujemy "dziki dzik"
+4. W pole hasła wpisujemy "12345678" oraz klikamy "ENTER" lub przycisk "Zaloguj się"
+5. Otrzymujemy informację, że wpisaliśmy błędny login lub hasło
+
 -- TO DO -- 
