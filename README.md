@@ -41,4 +41,14 @@ Kroki:
 4. W pole hasła wpisujemy "12345678" oraz klikamy "ENTER" lub przycisk "Zaloguj się"
 5. Otrzymujemy informację, że wpisaliśmy błędny login lub hasło
 
--- TO DO -- 
+TEST 2:
+Założenia:
+Chcemy spróbować się zalogować, a w przypadku wpisania złych credentiali wysłać przypominajkę
+
+Kroki:
+1. Wchodzimy na stronę bankier.pl
+2. W prawym górnym rogu znajdujemy ikonkę "ludzika" i klikamy na nią
+3. Wpisujemy credentiale i wciskamy przycisk "Zaloguj się"
+4. Po nieudanym zalogowaniu wciskamy przycisk "Nie pamiętam hasła lub loginu"
+5. Wpisujemy login oraz wciskamy przycisk "Przypomij hasło"
+6. Otrzymujemy wiadomość - "Podany login lub adres e-mail nie istnieje w bazie Bankier.pl"
