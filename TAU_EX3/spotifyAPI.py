@@ -1,4 +1,3 @@
-import logging
 import requests
 import inspect
 import json
@@ -9,8 +8,8 @@ class SpotifyWebAPITests:
 
     # Track ID from the URI
     track_id = '65HLjHSipFfvIU3082WFmS?si=21bdd6d3701b4c2e'
-    CLIENT_ID = 'SECRET ID'
-    CLIENT_SECRET = 'SECRET'
+    CLIENT_ID = 'SECRET_CLIENT_ID'
+    CLIENT_SECRET = 'SECRET_CLIENT_SECRET'
 
     AUTH_URL = 'https://accounts.spotify.com/api/token'
     headers = None
@@ -33,16 +32,62 @@ class SpotifyWebAPITests:
             'Authorization': 'Bearer {token}'.format(token=access_token)
         }
 
+    def assertion(self, given, expected) -> bool:
+        try:
+            assert given == expected
+            return True
+        except AssertionError:
+            return False
+
+    def print_test(self, testname, result):
+        if result:
+            print(testname + ': passed')
+        else:
+            print(testname + ': failed')
+
+    def test_if_requests_gets_OK(self):
+        result = requests.get(webApi.BASE_URL + 'audio-features/' + webApi.track_id, headers=webApi.headers).status_code
+
+        assertion = self.assertion(result, 200)
+        self.print_test(inspect.stack()[0][3], assertion)
+
+    def test_if_requests_gets_BAD_REQUEST(self):
+        result = requests.get(webApi.BASE_URL + 'audio-features/12312312asfdksoafdpkosak',headers=webApi.headers).status_code
+
+        assertion = self.assertion(result, 400)
+        self.print_test(inspect.stack()[0][3], assertion)
+
+    def test_if_requests_gets_NOT_FOUND(self):
+        result = requests.get(webApi.BASE_URL + 'dabadabadu',headers=webApi.headers).status_code
+
+        assertion = self.assertion(result, 404)
+        self.print_test(inspect.stack()[0][3], assertion)
+
+    def test_get_artist_name(self):
+        result = requests.get(webApi.BASE_URL + 'artists/6lp2VnIRXXpC9Wz7hSX6RE?si=41a30e18a02e496e', headers=webApi.headers)
+        result = result.json()['name']
+
+        assertion = self.assertion(result, 'Culture Shock')
+        self.print_test(inspect.stack()[0][3], assertion)
+
+    def test_get_song_tempo(self):
+        result = requests.get(webApi.BASE_URL + 'audio-features/' + webApi.track_id, headers=webApi.headers)
+        result = result.json()['tempo']
+
+        assertion = self.assertion(result, 173.986)
+        self.print_test(inspect.stack()[0][3], assertion)
+
 
 if __name__ == '__main__':
     webApi = SpotifyWebAPITests()
-    logger = logging.getLogger()
 
     # actual GET request with proper header
-    r = requests.get(webApi.BASE_URL + 'audio-features/' + webApi.track_id, headers=webApi.headers)
+    # r = requests.get(webApi.BASE_URL + 'audio-features/' + webApi.track_id, headers=webApi.headers)
+    # r = r.json()
+    # print(r)
 
-    r = r.json()
-
-    logger = logging.getLogger()
-    logger.info(r)
-    print(r)
+    webApi.test_if_requests_gets_OK()
+    webApi.test_if_requests_gets_BAD_REQUEST()
+    webApi.test_get_artist_name()
+    webApi.test_if_requests_gets_NOT_FOUND()
+    webApi.test_get_song_tempo()
